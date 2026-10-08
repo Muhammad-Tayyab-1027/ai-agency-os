@@ -451,3 +451,20 @@ class RevenueEvent(Base):
     note: Mapped[str | None] = mapped_column(Text)
     occurred_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     created_at: Mapped[datetime] = _created()
+
+
+# --------------------------------------------------------------------------- owner <-> manager chat
+
+
+class ChatMessage(Base):
+    """Conversation between the owner and the Manager (questions, instructions, reports)."""
+
+    __tablename__ = "chat_messages"
+    id: Mapped[uuid.UUID] = _uuid_pk()
+    role: Mapped[str] = mapped_column(String(20), nullable=False)  # owner | manager
+    author: Mapped[str] = mapped_column(String(320), nullable=False)
+    content: Mapped[str] = mapped_column(Text, nullable=False)
+    kind: Mapped[str] = mapped_column(String(20), nullable=False, default="message")  # message | report
+    report_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("reports.id"))
+    task_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("tasks.id"))
+    created_at: Mapped[datetime] = _created()
