@@ -72,20 +72,18 @@ def compute_report_data(session, start: datetime, end: datetime) -> dict[str, An
 
 def _data_appendix(data: dict[str, Any]) -> str:
     t = data["tasks"]
+    goal = f"{data['goal_target']:,.0f} {data['currency']} {data['goal_period']}" if data["goal_target"] else "not set"
     lines = [
         "---",
         "**Figures (from the database)**",
         "",
-        "| Metric | Value |",
-        "|---|---|",
-        f"| Revenue | {data['revenue']:.2f} {data['currency']} |",
-        f"| Goal | {data['goal_target'] if data['goal_target'] is not None else 'not set'} ({data['goal_period'] or '-'}) |",
-        f"| Tasks completed / failed / open | {t['completed']} / {t['failed']} / {t['open']} |",
-        f"| New leads | {data['new_leads']} |",
-        f"| Approvals waiting | {data['pending_approvals']} |",
-        f"| Human steps waiting | {data['open_human_tasks']} |",
-        f"| Errors logged | {data['errors']} |",
-        f"| AI cost | ${data['llm_cost_usd']:.2f} |",
+        f"- Revenue: {data['revenue']:,.2f} {data['currency']} (goal: {goal})",
+        f"- Tasks completed / failed / open: {t['completed']} / {t['failed']} / {t['open']}",
+        f"- New leads: {data['new_leads']}",
+        f"- Approvals waiting: {data['pending_approvals']}",
+        f"- Your to-dos waiting: {data['open_human_tasks']}",
+        f"- Errors logged: {data['errors']}",
+        f"- AI cost: ${data['llm_cost_usd']:.2f}",
     ]
     return "\n".join(lines)
 

@@ -160,8 +160,8 @@ def _report_narrative(data: dict) -> str:
     lines = [
         "Here's my report for this period.",
         "",
-        f"- Revenue: {data.get('revenue', 0):.2f} {data.get('currency', 'USD')} "
-        f"(goal: {data.get('goal_target') or 'not set'}).",
+        f"- Revenue: {data.get('revenue', 0):,.2f} {data.get('currency', 'USD')} (goal: "
+        + (f"{data['goal_target']:,.0f}" if data.get("goal_target") else "not set") + ").",
         f"- Tasks: {t.get('completed', 0)} completed, {t.get('failed', 0)} failed, {t.get('open', 0)} still open.",
         f"- New leads: {data.get('new_leads', 0)}.",
         f"- Waiting on you: {data.get('pending_approvals', 0)} approvals and {data.get('open_human_tasks', 0)} "
